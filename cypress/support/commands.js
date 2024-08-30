@@ -56,10 +56,23 @@ Cypress.Commands.add('isUserAuthenticated', (username) => {
   cy
     .contains('.nav-link', username)
     .should('exist')
-})
+});
 
 Cypress.Commands.add('errorMessage', (message) => {
   cy
     .contains('.error-messages', message)
     .should('exist')
-})
+});
+
+Cypress.Commands.add('login', (user) => {
+  cy.request('POST', cy.config().apiBaseUrl + '/users/login', {
+    user: {
+      email: user.email,
+      password: user.password
+    }
+  }).then(response => {
+    localStorage.setItem('jwtToken', response.body.user.token);
+
+    cy.visit(Cypress.config().settingsUrl);
+  });
+});

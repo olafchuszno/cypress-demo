@@ -1,16 +1,7 @@
 describe('Settings Page', () => {
   beforeEach(() => {
     cy.registerNewUser().then(user => {
-      cy.request('POST', cy.config().apiBaseUrl + '/users/login', {
-        user: {
-          email: user.email,
-          password: user.password
-        }
-      }).then(response => {
-        localStorage.setItem('jwtToken', response.body.user.token);
-
-        cy.visit(Cypress.config().settingsUrl);
-      });
+      cy.login(user)
     });
   });
   it('should have a correct url', () => {
@@ -37,6 +28,6 @@ describe('Settings Page', () => {
       .getByPlaceholder('URL of profile picture')
       .invoke('val')
       .should('include', 'http');
-  })
+  });
 
-})
+});

@@ -1,6 +1,12 @@
 /// <reference types="cypress" />
 /// <reference types="../support" />
 
+interface User {
+  username: string,
+  email: string,
+  password: string
+};
+
 declare namespace Cypress {
   interface Chainable<Subject> {
     /**
@@ -18,7 +24,7 @@ declare namespace Cypress {
     /**
      * Registers a new User and returns the User wrapped in a promise
      */
-    registerNewUser(): Promise<{ username: string, email: string, password: string }>,
+    registerNewUser(): Promise<User>,
     
     /**
      * 
@@ -26,6 +32,17 @@ declare namespace Cypress {
      */
     submitFormByButtonText(buttonText: string): Chainable<any>,
     isUserAuthenticated(userName: string): Chainable<any>,
+
+    /**
+     * Checks whether a correct error message appeared in the DOM
+     * @param message String
+     */
     errorMessage(message: string): Chainable<any>,
+
+    /**
+     * Logs the user in. Sends a request and puts jwtToken in localStorage
+     * @param message String
+     */
+    login(user: User): Chainable<any>,
   }
 }
